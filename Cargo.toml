@@ -1,0 +1,25 @@
+[package]
+name = "dingdongdang"
+version = "0.1.0"
+edition = "2021"
+description = "딩동댕 키워드: GPT를 이용하여 사용자 질문에 관련한 카카오맵 보여주기"
+license = "MIT"
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+js-sys = "0.3.64"
+reqwest = { version = "0.11.18", features = ["json"] }
+serde = { version = "1.0.164", features = ["derive"] }
+serde_json = "1.0.99"
+wasm-bindgen = "0.2.87"
+wasm-bindgen-futures = "0.4.37"
+web-sys = { version = "0.3.64",features = [
+  'Headers',
+  'Request',
+  'RequestInit',
+  'RequestMode',
+  'Response',
+  'Window',
+] }
+serde-wasm-bindgen = "0.5"

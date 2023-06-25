@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>딩동댕 선택기</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="author" content="Seok Won Choi" />
+    <meta
+      name="description"
+      content="DDD Chooser to give ideas where to go in KakaoMAP using GPT-4 based on user's query."
+    />
+
+    <style>
+      /* Add styles for header, logo and map */
+      #header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f5f5f5;
+      }
+      #logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      #map {
+        position: absolute;
+        top: 50px; /* Height of the header */
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=JS_API_KEY"
+    ></script>
+  </head>
+  <body>
+    <!-- simple header and input -->
+    <div id="header">
+      <div id="logo">딩동댕 선택기</div>
+      <input type="text" id="search-input" placeholder="Search..." />
+    </div>
+    <!-- The map container -->
+    <div id="map"></div>
+    <script type="module">
+      import init, { get_places } from "./pkg/dingdongdang.js";
+
+      async function run() {
+        await init(); // Initialize the wasm module
+
+        const input = document.getElementById("search-input");
+        input.addEventListener("keydown", async function (event) {
+          if (event.key === "Enter") {
+            let places = await get_places(event.target.value);
+            renderMap(places);
+          }
+        });
+      }
+
+      function renderMap(places) {
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+          center: new kakao.maps.LatLng(places[0].y, places[0].x),
+          level: 4,
+          mapTypeId: kakao.maps.MapTypeId.ROADMAP,
+        };
+
+        // Create the map
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // Function to display marker
+        function displayMarker(locPosition, message) {
+          const marker = new kakao.maps.Marker({
+            map: map,
+            position: locPosition,
+          });
+
+          const infowindow = new kakao.maps.InfoWindow({
+            content: message,
+            removable: false,
+          });
+
+          infowindow.open(map, marker);
+          map.setCenter(locPosition);
+        }
+
+        // Loop through each place and display marker
+        places.forEach(place => {
+          const locPosition = new kakao.maps.LatLng(place.y, place.x);
+          const message = `<div style="padding:5px;">${place.place_name}<br/>${place.address_name}</div>`;
+          displayMarker(locPosition, message);
+        });
+      }
+
+      run();
+    </script>
+  </body>
+</html>
