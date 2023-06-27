@@ -6,7 +6,7 @@
 
 # 아직 미완성 (카카오맵 API + WASM 연동만 해놓음)
 
-딩동댕 키워드는 사용자가 키워드를 입력하면 해당 키워드와 관련된 위치들을 지도 위에 표시하는 웹 애플리케이션입니다.
+딩동댕 선택기는 사용자가 키워드를 입력하면 해당 키워드와 관련된 위치들을 지도 위에 표시하는 웹 애플리케이션입니다.
 
 이 프로젝트는 Rust, WebAssembly (Wasm), JavaScript, HTML, CSS, GPT-4 API 그리고 카카오맵 API를 이용하여 만들어졌습니다.
 
@@ -14,7 +14,7 @@
 ## TODO
 
 - [ ] React.js frontend
-- [ ] GPT-4 API 연동
+- [x] GPT-4 API 연동
 - [x] Rust WASM
 - [x] 카카오맵 API + WASM 연동
 

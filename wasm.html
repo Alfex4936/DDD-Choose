@@ -41,11 +41,13 @@
     <div id="header">
       <div id="logo">딩동댕 선택기</div>
       <input type="text" id="search-input" placeholder="Search..." />
+      <input type="text" id="api-input" placeholder="OpenAI Key..." />
+      <input type="text" id="interest-input" placeholder="Interest..." />
     </div>
     <!-- The map container -->
     <div id="map"></div>
     <script type="module">
-      import init, { get_places } from "./pkg/dingdongdang.js";
+      import init, { get_places, get_interests } from "./pkg/dingdongdang.js";
 
       async function run() {
         await init(); // Initialize the wasm module
@@ -55,6 +57,21 @@
           if (event.key === "Enter") {
             let places = await get_places(event.target.value);
             renderMap(places);
+          }
+        });
+
+        const input2 = document.getElementById("interest-input");
+        input2.addEventListener("keydown", async function (event) {
+          if (event.key === "Enter") {
+            const input3 = document.getElementById("api-input");
+            if (event.target.value !== "" && input3.value !== "") {
+              console.log("Calling GPT-4");
+              let string = await get_interests(
+                input3.value,
+                event.target.value
+              );
+              console.log(string);
+            }
           }
         });
       }
