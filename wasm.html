@@ -33,7 +33,7 @@
     </style>
     <script
       type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=JS_API_KEY"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6282862d685b521ae8adf7b62ab64dd2"
     ></script>
   </head>
   <body>
@@ -89,7 +89,7 @@
         // Loop through each place and display marker
         places.forEach(place => {
           const locPosition = new kakao.maps.LatLng(place.y, place.x);
-          const message = `<div style="padding:5px;">${place.place_name}<br/>${place.address_name}</div>`;
+          const message = `<div style="padding:5px;width:100%">${place.place_name}<br/>${place.address_name}</div>`;
           displayMarker(locPosition, message);
         });
       }
