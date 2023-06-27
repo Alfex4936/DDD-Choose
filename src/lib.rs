@@ -1,6 +1,7 @@
+use gloo_utils::format::JsValueSerdeExt;
 use js_sys::Array;
 use wasm_bindgen::prelude::*;
-
+use web_sys::console;
 mod gpt;
 mod place;
 
@@ -56,6 +57,34 @@ pub fn get_places(search_string: String) -> js_sys::Promise {
     };
 
     wasm_bindgen_futures::future_to_promise(future)
+}
+
+#[wasm_bindgen]
+pub async fn get_places_by_gpt(keywords: String) -> Result<js_sys::Array, JsValue> {
+    let mut keywords: Vec<String> = keywords
+        .split(", ")
+        .map(|s: &str| s.trim().to_string())
+        .collect();
+
+    if let Some(last) = keywords.last_mut() {
+        *last = last.trim_end_matches('.').to_string();
+    }
+
+    let results = js_sys::Array::new();
+    for keyword in keywords {
+        match get_places_rs(keyword).await {
+            Ok(body) => {
+                if !body.documents.is_empty() {
+                    let place = &body.documents[0];
+                    results.push(&JsValue::from_serde(&place).unwrap());
+                }
+            }
+            Err(err) => {
+                console::log_1(&format!("Error: {:#?}", err).into());
+            }
+        }
+    }
+    Ok(results)
 }
 
 #[wasm_bindgen]

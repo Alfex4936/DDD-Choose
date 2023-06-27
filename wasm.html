@@ -47,7 +47,11 @@
     <!-- The map container -->
     <div id="map"></div>
     <script type="module">
-      import init, { get_places, get_interests } from "./pkg/dingdongdang.js";
+      import init, {
+        get_places,
+        get_interests,
+        get_places_by_gpt,
+      } from "./pkg/dingdongdang.js";
 
       async function run() {
         await init(); // Initialize the wasm module
@@ -70,7 +74,14 @@
                 input3.value,
                 event.target.value
               );
-              console.log(string);
+
+              const jsonObject = JSON.parse(string);
+              const content = jsonObject.choices[0].message.content;
+              console.log(content);
+
+              let places = await get_places_by_gpt(content);
+              console.log(places);
+              renderMap(places);
             }
           }
         });
