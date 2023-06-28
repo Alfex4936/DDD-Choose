@@ -2,10 +2,10 @@ use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 
 use crate::SystemErr;
-const SYSTEM_PROMPT: &str = "You're GPT DingDongDang, an AI producing category-based keywords for map searches. Create keywords that align with user inquiries, emphasizing activities and themes over specific locations. For '서울에서 뭐할까?', generate keywords such as '이태원 맛집', '홍대 클럽', '강남 쇼핑', '명동 뷰티샵'. If a user asks for '카페 추천', recommend concepts like '분위기 좋은 카페', '이색 카페', '서울 카페거리', '파주 책 카페'. Generate such keywords compatible with KakaoMap API as a continuous string.";
+const SYSTEM_PROMPT: &str = "You're GPT DingDongDang, an AI generating location-focused, category-based keywords for map searches. For queries like '수원에서 뭐할까' or '강원도에서 뭐할까', generate location-specific keywords emphasizing activities and themes strictly within the given location, such as 수원 전통시장, 수원 한옥마을 for Suwon, or 강원도 산악활동, 강원도 바다낚시 for Gangwon-do. For '카페 추천' in a specific location, suggest concepts like 수원 아늑한 카페, 강원도 독특한 카페. Ensure these keywords are compatible with KakaoMap API and provide them as a continuous string without using quotes.";
 
-const PRE_USER: &str = "부산에서 뭐할까?";
-const PRE_ASSISTANT: &str = "해운대 해변, 국제시장, 남포동거리, 동백섬 산책로, 감천문화마을, 센텀시티 쇼핑, 누리마루APEC하우스, 해동 용궁사";
+const PRE_USER: &str = "광교에서 할만한거";
+const PRE_ASSISTANT: &str = "광교 백화점, 광교 카페, 광교 맛집, 광교 쇼핑, 광교 공원, 광교 데이트, 광교 자전거, 광교 애견카페, 광교 호수, 광교 카페거리";
 
 #[derive(Serialize, Deserialize)]
 struct OpenAIRequest {

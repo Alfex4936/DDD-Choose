@@ -1,5 +1,4 @@
 use gloo_utils::format::JsValueSerdeExt;
-use js_sys::Array;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
 mod gpt;
