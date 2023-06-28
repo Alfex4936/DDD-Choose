@@ -1,5 +1,4 @@
-
-![demo](https://github.com/Alfex4936/Ajou-Library-GPT/assets/2356749/84ed6829-95fa-4193-b3a8-fb9131e86755)
+![image](https://github.com/Alfex4936/DDD-Choose/assets/2356749/ba8d7c62-89f7-4f7d-bf18-e5ff8b18378d)
 
 
 # 딩동댕 선택기 위치 검색
