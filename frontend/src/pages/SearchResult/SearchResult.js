@@ -5,19 +5,16 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import CircularProgress from "@material-ui/core/CircularProgress"; // import the loading circle
 
-import BookIcon from "@material-ui/icons/Book";
-import MenuBook from "@material-ui/icons/MenuBook";
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import useLibraSearch from "../../hooks/useLibraSearch/useLibraSearch";
+import useLibraSearch from "../../hooks/useSearch/useSearch";
 import { useStateValue } from "../../StateContext";
 
 import Search from "../../components/Search/Search";
 import SearchOption from "../../components/SearchOption/SearchOption";
 
 import KakaoMap from "../../components/KakaoMap/KakaoMap";
-import PlaceList from "../../components/PlaceList/PlaceList";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -76,7 +73,7 @@ export default function SearchResult() {
   const filteredData = useMemo(() => {
     switch (selectedTab) {
       default:
-        console.log("All: ", data);
+        console.log("Data: ", data);
         return data || [];
     }
   }, [data, selectedTab]);
@@ -104,20 +101,6 @@ export default function SearchResult() {
                 activeTab={selectedTab}
                 loading={loading}
               />
-              <SearchOption
-                title="Books"
-                icon={<BookIcon />}
-                setSelectedTab={setSelectedTabAndUpdateClickCount}
-                activeTab={selectedTab}
-                loading={loading}
-              />
-              <SearchOption
-                title="RISS"
-                icon={<MenuBook />}
-                setSelectedTab={setSelectedTabAndUpdateClickCount}
-                activeTab={selectedTab}
-                loading={loading}
-              />
             </div>
             {/* <div className="searchResult__optionsRight">
               <SearchOption title="Settings" />
@@ -127,12 +110,12 @@ export default function SearchResult() {
       </div>
       {!term && (
         <div className="searchResult__items">
-          <p
+          <div
             className="searchResult__itemsCount"
             style={{ whiteSpace: "pre-line" }}
           >
             {error}
-          </p>
+          </div>
         </div>
       )}
       {term && (
@@ -182,10 +165,10 @@ export default function SearchResult() {
                         variant="middle"
                       />
 
-                      <a href="#" className="searchResult__itemLink">
-                        Places -
+                      <button className="searchResult__itemLink">
+                        카카오맵
                         <ArrowDropDownIcon />
-                      </a>
+                      </button>
 
                       <KakaoMap places={filteredData} />
                     </>

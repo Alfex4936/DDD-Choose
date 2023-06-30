@@ -45,7 +45,11 @@ struct Message {
   }
 }
 */
-pub async fn get_openai_response_rs(api: String, interest: String) -> Result<String, SystemErr> {
+pub async fn get_openai_response_rs(
+    api: String,
+    model: String,
+    interest: String,
+) -> Result<String, SystemErr> {
     let url = "https://api.openai.com/v1/chat/completions";
 
     let mut headers = HeaderMap::new();
@@ -58,7 +62,7 @@ pub async fn get_openai_response_rs(api: String, interest: String) -> Result<Str
     let client = reqwest::Client::new();
 
     let request_body = OpenAIRequest {
-        model: "gpt-3.5-turbo".to_string(),
+        model,
         messages: vec![
             Message {
                 role: "system".to_string(),
@@ -85,7 +89,7 @@ pub async fn get_openai_response_rs(api: String, interest: String) -> Result<Str
                 content: interest,
             },
         ],
-        max_tokens: 300,
+        max_tokens: 200,
     };
 
     let response = client

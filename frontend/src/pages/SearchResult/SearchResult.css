@@ -53,6 +53,8 @@
   align-items: center;
   color: #202124;
   text-decoration: none;
+  border: none !important;
+  background: none;
 }
 
 .searchResult__itemImage {

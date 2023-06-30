@@ -76,6 +76,11 @@ pub async fn get_places_by_gpt(keywords: String) -> Result<js_sys::Array, JsValu
                 if !body.documents.is_empty() {
                     let place = &body.documents[0];
                     results.push(&JsValue::from_serde(&place).unwrap());
+
+                    if body.documents.len() > 1 {
+                        let place = &body.documents[1];
+                        results.push(&JsValue::from_serde(&place).unwrap());
+                    }
                 }
             }
             Err(err) => {
@@ -87,8 +92,9 @@ pub async fn get_places_by_gpt(keywords: String) -> Result<js_sys::Array, JsValu
 }
 
 #[wasm_bindgen]
-pub fn get_interests(api: String, interest: String) -> js_sys::Promise {
-    let future = get_openai_response_rs(api, interest);
+pub fn get_interests(api: String, model: String, interest: String) -> js_sys::Promise {
+    console::log_1(&format!("Model: {:#?}, interest: {:#?}", model, interest).into());
+    let future = get_openai_response_rs(api, model, interest);
 
     let future = async move {
         let body = future.await?;

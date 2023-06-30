@@ -13,15 +13,16 @@
     "dingdongdang": "../pkg",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.12.1",
+    "react-router-dom": "^6.14.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^3.3.2"
   },
   "scripts": {
-    "start": "cd ../ && wasm-pack build --release --target web && cd frontend && set PORT=8080 & craco start",
-    "build": "set NODE_OPTIONS=--openssl-legacy-provider & craco build",
-    "test": "set NODE_OPTIONS=--openssl-legacy-provider & craco test",
-    "eject": "set NODE_OPTIONS=--openssl-legacy-provider & craco eject"
+    "start": "cd ../ && wasm-pack build --release --target web && cd frontend && yarn add ../pkg && set PORT=8080 & craco start",
+    "build": "set PORT=8080 & craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "serve": "yarn build && serve -s build -l 8080"
   },
   "eslintConfig": {
     "extends": [

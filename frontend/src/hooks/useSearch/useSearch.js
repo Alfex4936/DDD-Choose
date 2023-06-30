@@ -9,7 +9,7 @@ import init, {
 } from "dingdongdang";
 
 export const useLibraSearch = term => {
-  const [{ numResults, openAIKey }, dispatch] = useStateValue();
+  const [{ numResults, openAIKey, model }, dispatch] = useStateValue();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -31,9 +31,10 @@ export const useLibraSearch = term => {
         console.log("wasm module initialized");
 
         if (term && openAIKey) {
+          console.log("TERM: " + term + " MODEL: " + model);
           setLoading(true);
           try {
-            let place_keywords = await get_interests(openAIKey, term);
+            let place_keywords = await get_interests(openAIKey, model, term);
             if (isCancelled) return; // check cancellation after every async operation
 
             console.log(place_keywords);
