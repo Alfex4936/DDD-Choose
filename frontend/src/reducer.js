@@ -1,5 +1,5 @@
 export const initialState = {
-  term: null,
+  term: "",
   numResults: 5,
   openAIKey: "sk-",
   error: null,

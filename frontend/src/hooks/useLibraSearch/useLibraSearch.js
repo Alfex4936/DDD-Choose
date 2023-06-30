@@ -9,7 +9,6 @@ import init, {
 } from "dingdongdang";
 
 export const useLibraSearch = term => {
-  console.log("useLibraSear rending");
   const [{ numResults, openAIKey }, dispatch] = useStateValue();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,16 +23,19 @@ export const useLibraSearch = term => {
 
   // useEffect for fetchData
   useEffect(() => {
-    init()
-      .then(async () => {
-        // Use the module after it has been initialized.
+    let isCancelled = false;
+
+    async function fetchData() {
+      try {
+        await init();
         console.log("wasm module initialized");
 
-        // Call other wasm functions here. For example:
         if (term && openAIKey) {
           setLoading(true);
           try {
             let place_keywords = await get_interests(openAIKey, term);
+            if (isCancelled) return; // check cancellation after every async operation
+
             console.log(place_keywords);
 
             const jsonObject = JSON.parse(place_keywords);
@@ -41,27 +43,36 @@ export const useLibraSearch = term => {
             console.log(content);
 
             let places = await get_places_by_gpt(content);
+            if (isCancelled) return; // check cancellation after every async operation
+
             places["queries"] = content;
 
             console.log(places);
-            setData(places);
-
-            dispatch({ type: actionTypes.ADD_HISTORY, history: term });
-            setError(null); // clear any previous error
+            if (!isCancelled) {
+              setData(places);
+              dispatch({ type: actionTypes.ADD_HISTORY, history: term });
+              setError(null); // clear any previous error
+            }
           } catch (error) {
-            setError(error.message);
+            if (!isCancelled) setError(error.message);
           } finally {
-            setLoading(false);
+            if (!isCancelled) setLoading(false);
           }
         } else {
-          setError("Invalid search query or OpenAI Key");
+          if (!isCancelled) setError("Invalid search query or OpenAI Key");
         }
-      })
-      .catch(err => {
+      } catch (err) {
         console.error("Error during wasm initialization", err);
-        setError("Error during wasm initialization");
-      });
-  }, [numResults, term, openAIKey]); // Pass the required dependencies
+        if (!isCancelled) setError("Error during wasm initialization");
+      }
+    }
+
+    fetchData();
+
+    return () => {
+      isCancelled = true; // set cancellation flag on cleanup
+    };
+  }, [numResults, term, openAIKey, dispatch]);
 
   return { data, loading, error };
 };

@@ -92,7 +92,6 @@ function Home() {
     setGptModel(event.target.value);
   };
 
-  console.log("Home.js is rendering");
   useEffect(() => {
     const savedHistory =
       JSON.parse(localStorage.getItem("searchHistory")) || [];

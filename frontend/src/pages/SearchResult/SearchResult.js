@@ -16,9 +16,8 @@ import { useStateValue } from "../../StateContext";
 import Search from "../../components/Search/Search";
 import SearchOption from "../../components/SearchOption/SearchOption";
 
-import BookDetail from "../../components/Book/BookDetail";
-import RissDetail from "../../components/RISS/RissDetail";
 import KakaoMap from "../../components/KakaoMap/KakaoMap";
+import PlaceList from "../../components/PlaceList/PlaceList";
 
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -50,9 +49,6 @@ export default function SearchResult() {
     setTabClickCount(prevCount => prevCount + 1);
   };
 
-  // Add a new piece of state for the filtered results
-  // const [filteredData, setFilteredData] = useState([]);
-
   const handleCloseError = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -79,12 +75,6 @@ export default function SearchResult() {
   // useMemo to memoize the calculation of filtered data
   const filteredData = useMemo(() => {
     switch (selectedTab) {
-      case "Books":
-        console.log("book: ", data);
-        return data?.books || [];
-      case "RISS":
-        console.log("riss: ", data);
-        return data?.riss || [];
       default:
         console.log("All: ", data);
         return data || [];
@@ -167,11 +157,19 @@ export default function SearchResult() {
                     results for {term}
                     <br />
                     <br />
-                    {data?.queries.split(",").map((query, index) => (
+                    {/* {data?.queries.split(",").map((query, index) => (
                       <Chip
                         style={{ marginRight: "10px", marginBottom: "10px" }}
                         key={index}
                         label={query.trim()} // Remove leading and trailing whitespaces
+                        variant="outlined"
+                      />
+                    ))} */}
+                    {data?.map((query, index) => (
+                      <Chip
+                        style={{ marginRight: "10px", marginBottom: "10px" }}
+                        key={index}
+                        label={query.place_name.trim()} // Remove leading and trailing whitespaces
                         variant="outlined"
                       />
                     ))}

@@ -2,10 +2,12 @@ use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 
 use crate::SystemErr;
-const SYSTEM_PROMPT: &str = "You're GPT DingDongDang, an AI generating location-focused, category-based keywords for map searches. For queries like '수원에서 뭐할까' or '강원도에서 뭐할까', generate location-specific keywords emphasizing activities and themes strictly within the given location, such as 수원 전통시장, 수원 한옥마을 for Suwon, or 강원도 산악활동, 강원도 바다낚시 for Gangwon-do. For '카페 추천' in a specific location, suggest concepts like 수원 아늑한 카페, 강원도 독특한 카페. Ensure these keywords are compatible with KakaoMap API and provide them as a continuous string without using quotes.";
+const SYSTEM_PROMPT: &str = "You're GPT DingDongDang, an AI generating location-focused, category-based keywords for map searches. For user prompts like '수원에서 뭐할까' or '강원도에서 뭐할까', your task is to generate keywords that are not only within the specified location but also relevant to the user's context or situation. For example, for '속초에 놀러왔어~ 커플끼리 뭐해볼까', you should provide romantic or couple-friendly recommendations strictly within Sokcho, like '속초 해변 산책', '속초 이색 카페', '속초 씨푸드 맛집'. When a location is specified, every keyword should be preceded by the location to ensure relevance. Make sure your keywords are compatible with KakaoMap API, and provide them as a continuous string without using quotes.";
 
 const PRE_USER: &str = "광교에서 할만한거";
 const PRE_ASSISTANT: &str = "광교 백화점, 광교 카페, 광교 맛집, 광교 쇼핑, 광교 공원, 광교 데이트, 광교 자전거, 광교 애견카페, 광교 호수, 광교 카페거리";
+const PRE_USER1: &str = "제주도에 놀러왔어~ 커플끼리 뭐해볼까";
+const PRE_ASSISTANT1: &str = "제주도 바다 산책, 제주도 로맨틱 카페, 제주도 씨푸드 맛집, 제주도 성산일출봉, 제주도 사진촬영, 제주도 조랑말체험, 제주도 해변 로맨틱 디너, 제주도 불빛축제";
 
 #[derive(Serialize, Deserialize)]
 struct OpenAIRequest {
@@ -56,7 +58,7 @@ pub async fn get_openai_response_rs(api: String, interest: String) -> Result<Str
     let client = reqwest::Client::new();
 
     let request_body = OpenAIRequest {
-        model: "gpt-4".to_string(),
+        model: "gpt-3.5-turbo".to_string(),
         messages: vec![
             Message {
                 role: "system".to_string(),
@@ -72,10 +74,18 @@ pub async fn get_openai_response_rs(api: String, interest: String) -> Result<Str
             },
             Message {
                 role: "user".to_string(),
+                content: PRE_USER1.to_string(),
+            },
+            Message {
+                role: "assistant".to_string(),
+                content: PRE_ASSISTANT1.to_string(),
+            },
+            Message {
+                role: "user".to_string(),
                 content: interest,
             },
         ],
-        max_tokens: 150,
+        max_tokens: 300,
     };
 
     let response = client

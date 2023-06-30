@@ -1,5 +1,5 @@
 // Search.js
-import React, { useState } from "react"; // import useEffect
+import React, { useState, useEffect } from "react"; // import useEffect
 import { useNavigate } from "react-router-dom";
 import { useStateValue } from "../../StateContext";
 import { actionTypes } from "../../reducer";
@@ -21,16 +21,23 @@ function Search({ hideButtons = false, loading = false }) {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (term.trim() !== "") {
+      setInput(term);
+    }
+  }, [term]);
+
+  useEffect(() => {
+    if (text.trim() !== "") {
+      setInput(text);
+    }
+  }, [text]);
+
   const search = e => {
     e.preventDefault();
 
     if (loading) {
       return; // Don't perform search while loading
-    }
-
-    const newInput = term || text;
-    if (newInput !== "") {
-      setInput(newInput);
     }
 
     console.log("You hit the search button >>", input);
