@@ -8,7 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress"; // import the
 import CloseIcon from "@material-ui/icons/Close";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 
-import useLibraSearch from "../../hooks/useSearch/useSearch";
+import useSearch from "../../hooks/useSearch/useSearch";
 import { useStateValue } from "../../StateContext";
 
 import Search from "../../components/Search/Search";
@@ -31,7 +31,7 @@ function Alert(props) {
 
 export default function SearchResult() {
   const [{ term, error }] = useStateValue();
-  const { data, loading } = useLibraSearch(term); // LIVE API Call
+  const { data, loading } = useSearch(term); // LIVE API Call
 
   // Add a new piece of state for the selected tab
   const [selectedTab, setSelectedTab] = useState("All");

@@ -2,13 +2,9 @@ import { useState, useEffect } from "react";
 import { useStateValue } from "../../StateContext";
 import { actionTypes } from "../../reducer";
 
-import init, {
-  // get_places,
-  get_interests,
-  get_places_by_gpt,
-} from "dingdongdang";
+import init, { get_interests, get_places_by_gpt } from "dingdongdang";
 
-export const useLibraSearch = term => {
+export const useSearch = term => {
   const [{ numResults, openAIKey, model }, dispatch] = useStateValue();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +15,7 @@ export const useLibraSearch = term => {
     if (error) {
       dispatch({ type: actionTypes.SET_ERROR, error: error });
     }
-  }, [error, dispatch]);
+  }, [error]);
 
   // useEffect for fetchData
   useEffect(() => {
@@ -27,10 +23,10 @@ export const useLibraSearch = term => {
 
     async function fetchData() {
       try {
-        await init();
-        console.log("wasm module initialized");
-
         if (term && openAIKey) {
+          await init();
+          console.log("wasm module initialized");
+
           console.log("TERM: " + term + " MODEL: " + model);
           setLoading(true);
           try {
@@ -68,14 +64,16 @@ export const useLibraSearch = term => {
       }
     }
 
-    fetchData();
+    if (!loading) {
+      fetchData();
+    }
 
     return () => {
       isCancelled = true; // set cancellation flag on cleanup
     };
-  }, [numResults, term, openAIKey, dispatch]);
+  }, [term]); // added dataLoaded as dependency
 
   return { data, loading, error };
 };
 
-export default useLibraSearch;
+export default useSearch;

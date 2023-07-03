@@ -10,7 +10,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
-    "dingdongdang": "../pkg",
+    "dingdongdang": "./pkg",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
@@ -18,7 +18,7 @@
     "web-vitals": "^3.3.2"
   },
   "scripts": {
-    "start": "cd ../ && wasm-pack build --release --target web && cd frontend && yarn add ../pkg && set PORT=8080 & craco start",
+    "start": "cd ../ && wasm-pack build --release --target web --out-dir ./frontend/pkg && cd frontend && yarn remove dingdongdang && yarn add ./pkg && set PORT=8080 & craco start",
     "build": "set PORT=8080 & craco build",
     "test": "craco test",
     "eject": "craco eject",

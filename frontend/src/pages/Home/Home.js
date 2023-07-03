@@ -106,7 +106,7 @@ function Home() {
     });
 
     dispatch({ type: actionTypes.CLEAR_ERROR });
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="home">
