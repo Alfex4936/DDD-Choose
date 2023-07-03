@@ -1,0 +1,20 @@
+{
+  "name": "dingdongdang",
+  "description": "딩동댕 키워드: GPT를 이용하여 사용자 질문에 관련한 카카오맵 보여주기",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alfex4936/DDD-Choose"
+  },
+  "files": [
+    "dingdongdang_bg.wasm",
+    "dingdongdang.js",
+    "dingdongdang.d.ts"
+  ],
+  "module": "dingdongdang.js",
+  "types": "dingdongdang.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
