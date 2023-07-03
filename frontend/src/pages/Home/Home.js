@@ -52,6 +52,7 @@ function Home() {
 
   const handleCancel = () => {
     setKey(openAIKey); // reset the key state to the current value in the context
+    setGptModel(model); // reset the model state to the current value in the context
     setOpen(false);
   };
 
@@ -91,6 +92,11 @@ function Home() {
   const handleModelChange = event => {
     setGptModel(event.target.value);
   };
+
+  useEffect(() => {
+    setKey(openAIKey);
+    setGptModel(model);
+  }, [openAIKey, model]);
 
   useEffect(() => {
     const savedHistory =
