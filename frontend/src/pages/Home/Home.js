@@ -96,7 +96,7 @@ function Home() {
     const savedHistory =
       JSON.parse(localStorage.getItem("searchHistory")) || [];
     const GPT = localStorage.getItem("gptModel") || "gpt-4";
-    const savedKey = localStorage.getItem("openAIKey") || "";
+    const savedKey = localStorage.getItem("openAIKey") || "sk-";
 
     dispatch({
       type: actionTypes.INIT_STATE,
