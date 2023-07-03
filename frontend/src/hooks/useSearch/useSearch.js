@@ -1,27 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useStateValue } from "../../StateContext";
 import { actionTypes } from "../../reducer";
 
 import init, { get_interests, get_places_by_gpt } from "dingdongdang";
 
-export const useSearch = term => {
-  const [{ numResults, openAIKey, model }, dispatch] = useStateValue();
+export const useSearch = () => {
+  const [{ openAIKey, model }, dispatch] = useStateValue();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // useEffect for error
-  useEffect(() => {
-    if (error) {
-      dispatch({ type: actionTypes.SET_ERROR, error: error });
-    }
-  }, [error]);
+  const fetchData = useCallback(
+    async term => {
+      let isCancelled = false;
 
-  // useEffect for fetchData
-  useEffect(() => {
-    let isCancelled = false;
-
-    async function fetchData() {
       try {
         if (term && openAIKey) {
           await init();
@@ -62,18 +54,15 @@ export const useSearch = term => {
         console.error("Error during wasm initialization", err);
         if (!isCancelled) setError("Error during wasm initialization");
       }
-    }
 
-    if (!loading) {
-      fetchData();
-    }
+      return () => {
+        isCancelled = true; // set cancellation flag on cleanup
+      };
+    },
+    [openAIKey, model, dispatch]
+  );
 
-    return () => {
-      isCancelled = true; // set cancellation flag on cleanup
-    };
-  }, [term]); // added dataLoaded as dependency
-
-  return { data, loading, error };
+  return { data, loading, error, fetchData };
 };
 
 export default useSearch;

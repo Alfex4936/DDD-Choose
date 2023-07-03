@@ -30,8 +30,8 @@ function Alert(props) {
 }
 
 export default function SearchResult() {
-  const [{ term, error }] = useStateValue();
-  const { data, loading } = useSearch(term); // LIVE API Call
+  const [{ term }] = useStateValue();
+  const { data, loading, fetchData, error } = useSearch();
 
   // Add a new piece of state for the selected tab
   const [selectedTab, setSelectedTab] = useState("All");
@@ -56,6 +56,12 @@ export default function SearchResult() {
     //   error: null,
     // });
   };
+
+  useEffect(() => {
+    if (term) {
+      fetchData(term);
+    }
+  }, [term, fetchData]);
 
   useEffect(() => {
     if (loading) {
