@@ -1,14 +1,31 @@
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION};
 use serde::{Deserialize, Serialize};
+use std::hash::{Hash, Hasher};
 
 use crate::SystemErr;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Place {
     pub address_name: String,
     pub place_name: String,
     pub x: String,
     pub y: String,
+}
+
+impl PartialEq for Place {
+    fn eq(&self, other: &Self) -> bool {
+        self.place_name == other.place_name && self.x == other.x && self.y == other.y
+    }
+}
+
+impl Eq for Place {}
+
+impl Hash for Place {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.place_name.hash(state);
+        self.x.hash(state);
+        self.y.hash(state);
+    }
 }
 
 #[derive(Deserialize)]

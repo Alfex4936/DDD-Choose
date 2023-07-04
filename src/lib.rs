@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use gloo_utils::format::JsValueSerdeExt;
 use wasm_bindgen::prelude::*;
 use web_sys::console;
@@ -69,16 +71,15 @@ pub async fn get_places_by_gpt(keywords: String) -> Result<js_sys::Array, JsValu
         *last = last.trim_end_matches('.').to_string();
     }
 
+    let mut unique_places = HashSet::new();
     let results = js_sys::Array::new();
+
     for keyword in keywords {
         match get_places_rs(keyword).await {
             Ok(body) => {
-                if !body.documents.is_empty() {
-                    let place = &body.documents[0];
-                    results.push(&JsValue::from_serde(&place).unwrap());
-
-                    if body.documents.len() > 1 {
-                        let place = &body.documents[1];
+                for place in body.documents {
+                    if !unique_places.contains(&place) {
+                        unique_places.insert(place.clone());
                         results.push(&JsValue::from_serde(&place).unwrap());
                     }
                 }

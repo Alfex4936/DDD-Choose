@@ -112,6 +112,7 @@ function Home() {
     });
 
     dispatch({ type: actionTypes.CLEAR_ERROR });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

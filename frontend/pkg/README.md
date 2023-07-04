@@ -1,10 +1,8 @@
 ![demo](https://github.com/Alfex4936/DDD-Choose/assets/2356749/c6f32170-4da0-4ffb-8ed9-90f586b60636)
 
-![image](https://github.com/Alfex4936/DDD-Choose/assets/2356749/93347408-c40d-4dd0-846c-0cdf359980b8)
+![image](https://github.com/Alfex4936/DDD-Choose/assets/2356749/61ad56ce-8f36-48d6-867c-fdaef208601d)
 
 # 딩동댕 선택기 위치 검색
-
-# 아직 미완성 (카카오맵 API + WASM 연동만 해놓음)
 
 딩동댕 선택기는 사용자가 키워드를 입력하면 해당 키워드와 관련된 위치들을 지도 위에 표시하는 웹 애플리케이션입니다.
 
@@ -13,10 +11,11 @@
 
 ## TODO
 
-- [ ] React.js frontend
+- [x] React.js frontend
 - [x] GPT-4 API 연동
 - [x] Rust WASM
 - [x] 카카오맵 API + WASM 연동
+- [ ] Better GPT prompt
 
 
 ## 기술 스택
