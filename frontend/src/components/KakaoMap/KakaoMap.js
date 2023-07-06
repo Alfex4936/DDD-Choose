@@ -24,7 +24,7 @@ const KakaoMap = ({ places }) => {
     // Loop through each place and display marker
     const markers = places.map(place => {
       const locPosition = new kakao.maps.LatLng(place.y, place.x);
-      const message = `<div style="padding:5px;width:100%">${place.place_name}<br/>${place.address_name}</div>`;
+      const message = `<div style="padding:5px;width:100%">${place.place_name}<br/>${place.category_name}<br/>${place.address_name}</div>`;
 
       const marker = new kakao.maps.Marker({
         position: locPosition,

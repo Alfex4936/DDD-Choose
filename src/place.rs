@@ -10,6 +10,7 @@ pub struct Place {
     pub place_name: String,
     pub x: String,
     pub y: String,
+    pub category_name: String,
 }
 
 impl PartialEq for Place {
