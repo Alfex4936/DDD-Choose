@@ -93,7 +93,7 @@ function Home() {
       const response = await fetch(redirect_uri, {
         method: "GET",
       });
-      if (response.ok) {
+      if (response.ok || response.status === 400) {
         window.location.href = kakaoURL;
       } else {
         console.log(
