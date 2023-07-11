@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "cd ../ && wasm-pack build --release --target web --out-dir ./frontend/pkg && cd frontend && yarn remove dingdongdang && yarn add ./pkg && set PORT=8080 & craco start",
+    "dev": "cd ../ && wasm-pack build --release --target web --out-dir ./frontend/pkg && cd frontend && yarn remove dingdongdang && yarn add ./pkg && yarn build && serve -s build -l 8080",
     "build": "set PORT=8080 & craco build",
     "test": "craco test",
     "eject": "craco eject",

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home/Home";
+import HandleAuth from "./pages/HandleAuth/HandleAuth";
 import SearchResult from "./pages/SearchResult/SearchResult";
 
 import "./App.css";
@@ -15,6 +16,8 @@ function App() {
 
           {/* SearchPage (The results page) */}
           <Route path="search" element={<SearchResult />} />
+
+          <Route path="oauth" element={<HandleAuth />} />
         </Routes>
       </Router>
     </div>

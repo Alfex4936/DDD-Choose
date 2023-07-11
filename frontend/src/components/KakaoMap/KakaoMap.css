@@ -1,0 +1,21 @@
+.info-window {
+  padding: 10px;
+  color: #333;
+  background: #fff;
+  border-radius: 5px;
+  width: 150px;
+  border: 1px solid #ddd;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.info-window h1 {
+  font-size: 14px;
+  margin: 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.info-window p {
+  font-size: 12px;
+  margin: 5px 0;
+}

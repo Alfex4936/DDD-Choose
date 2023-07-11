@@ -146,14 +146,21 @@ export default function SearchResult() {
                     results for {term}
                     <br />
                     <br />
-                    {/* {data?.queries.split(",").map((query, index) => (
-                      <Chip
-                        style={{ marginRight: "10px", marginBottom: "10px" }}
-                        key={index}
-                        label={query.trim()} // Remove leading and trailing whitespaces
-                        variant="outlined"
-                      />
-                    ))} */}
+                    {selectedTab === "All" && (
+                      <>
+                        <button className="searchResult__itemLink">
+                          카카오맵 - 클릭하면서 장소를 구경하세요
+                          <ArrowDropDownIcon />
+                        </button>
+
+                        <KakaoMap places={filteredData} />
+
+                        <Divider
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          variant="middle"
+                        />
+                      </>
+                    )}
                     {data?.map((query, index) => (
                       <Chip
                         style={{ marginRight: "10px", marginBottom: "10px" }}
@@ -163,22 +170,6 @@ export default function SearchResult() {
                       />
                     ))}
                   </p>
-
-                  {selectedTab === "All" && (
-                    <>
-                      <Divider
-                        style={{ marginTop: "16px", marginBottom: "16px" }}
-                        variant="middle"
-                      />
-
-                      <button className="searchResult__itemLink">
-                        카카오맵
-                        <ArrowDropDownIcon />
-                      </button>
-
-                      <KakaoMap places={filteredData} />
-                    </>
-                  )}
                 </>
               ) : (
                 <a className="searchResult__itemTitle">
@@ -215,7 +206,9 @@ export default function SearchResult() {
           severity="success"
           sx={{ width: "100%" }}
         >
-          Successfully loaded!
+          Click the marker to see the location!
+          <br />
+          지도에서 파란 마커를 클릭해서 정보를 보세요 :)
         </Alert>
       </Snackbar>
       <Snackbar

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import "./KakaoMap.css";
 
 const { kakao } = window;
 
@@ -6,7 +7,6 @@ const KakaoMap = ({ places }) => {
   const mapContainer = useRef(null);
 
   useEffect(() => {
-    // Create the map
     const mapOption = {
       center: new kakao.maps.LatLng(places[0].y, places[0].x),
       level: 4,
@@ -14,17 +14,23 @@ const KakaoMap = ({ places }) => {
     };
     const map = new kakao.maps.Map(mapContainer.current, mapOption);
 
-    // Create marker clusterer
     const clusterer = new kakao.maps.MarkerClusterer({
-      map: map, // The map that the markers will be added to
-      averageCenter: true, // Whether the center of the cluster marker should be the average position of the markers in the cluster
-      minLevel: 10, // The minimum level to cluster markers
+      map: map,
+      averageCenter: true,
+      minLevel: 10,
     });
 
-    // Loop through each place and display marker
-    const markers = places.map(place => {
-      const locPosition = new kakao.maps.LatLng(place.y, place.x);
-      const message = `<div style="padding:5px;width:100%">${place.place_name}<br/>${place.category_name}<br/>${place.address_name}</div>`;
+    const markers = places.map((place, index) => {
+      const locPosition = new kakao.maps.LatLng(
+        parseFloat(place.y) + Math.random() * 0.0002 - 0.0001,
+        parseFloat(place.x) + Math.random() * 0.0002 - 0.0001
+      );
+      const message = `
+        <div class="info-window">
+            <h1>${place.place_name}</h1>
+            <p>${place.category_name}</p>
+            <p>${place.address_name}</p>
+        </div>`;
 
       const marker = new kakao.maps.Marker({
         position: locPosition,
@@ -35,18 +41,21 @@ const KakaoMap = ({ places }) => {
         removable: true,
       });
 
+      // Add event listener for marker click
       kakao.maps.event.addListener(marker, "click", function () {
         infowindow.open(map, marker);
       });
 
-      infowindow.open(map, marker);
+      // Open the info window for 30% of markers initially
+      if (Math.random() < 0.3) {
+        infowindow.open(map, marker);
+      }
+
       return marker;
     });
 
-    // Add markers to clusterer
     clusterer.addMarkers(markers);
 
-    // Set map center as first place
     if (places.length > 0) {
       map.setCenter(new kakao.maps.LatLng(places[0].y, places[0].x));
     }

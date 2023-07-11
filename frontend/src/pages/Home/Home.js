@@ -19,12 +19,12 @@ import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
-import { Slider } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 
 import "./Home.css";
 
 function Home() {
-  const [{ numResults, openAIKey, history, model }, dispatch] = useStateValue();
+  const [{ openAIKey, history, model }, dispatch] = useStateValue();
   const [key, setKey] = useState(openAIKey || ""); // will be initialized with the current value of the key in the context
   const [gptModel, setGptModel] = useState(model || "gpt-4");
   const [open, setOpen] = useState(false);
@@ -82,11 +82,27 @@ function Home() {
     handleCloseHistory();
   };
 
-  const onNumResultsChange = (event, value) => {
-    dispatch({
-      type: actionTypes.SET_NUM_RESULTS,
-      numResults: value,
-    });
+  const handleLoginOpen = async () => {
+    const rest_api_key = process.env.REACT_APP_KAKAO_REST_KEY; //REST API KEY
+    const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT; //Redirect URI
+
+    // oauth 요청 URL
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+
+    try {
+      const response = await fetch(redirect_uri, {
+        method: "GET",
+      });
+      if (response.ok) {
+        window.location.href = kakaoURL;
+      } else {
+        console.log(
+          "Failed to reach redirect_uri, staying on the current page."
+        );
+      }
+    } catch (error) {
+      console.log("An error occurred:", error);
+    }
   };
 
   const handleModelChange = event => {
@@ -127,6 +143,9 @@ function Home() {
           <Link to="#" onClick={handleClickOpenHistory}>
             <HistoryIcon />
           </Link>
+          <Link to="#" onClick={handleLoginOpen}>
+            <Avatar />
+          </Link>
         </div>
       </div>
 
@@ -164,7 +183,7 @@ function Home() {
             <option value={"gpt-3.5-turbo"}>gpt-3.5-turbo</option>
           </Select>
 
-          <DialogContentText>Please select K: </DialogContentText>
+          {/* <DialogContentText>Please select K: </DialogContentText>
           <Slider
             style={{ width: "50vh", margin: "0 auto" }}
             aria-label="K"
@@ -176,7 +195,7 @@ function Home() {
             marks
             min={1}
             max={10}
-          />
+          /> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color="primary">
