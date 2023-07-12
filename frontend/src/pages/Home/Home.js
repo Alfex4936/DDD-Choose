@@ -24,11 +24,13 @@ import { Avatar } from "@material-ui/core";
 import "./Home.css";
 
 function Home() {
-  const [{ openAIKey, history, model }, dispatch] = useStateValue();
+  const [{ openAIKey, history, model, profileImageUrl }, dispatch] =
+    useStateValue();
   const [key, setKey] = useState(openAIKey || ""); // will be initialized with the current value of the key in the context
   const [gptModel, setGptModel] = useState(model || "gpt-4");
   const [open, setOpen] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   const handleClickOpenHistory = () => {
     setOpenHistory(true);
@@ -110,6 +112,20 @@ function Home() {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("jwt");
+
+    if (token) {
+      fetchUserData(token)
+        .then(data => {
+          setAvatarUrl(data.thumbnail_image_url);
+        })
+        .catch(error => {
+          console.error("An error occurred:", error);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
     setKey(openAIKey);
     setGptModel(model);
   }, [openAIKey, model]);
@@ -144,7 +160,7 @@ function Home() {
             <HistoryIcon />
           </Link>
           <Link to="#" onClick={handleLoginOpen}>
-            <Avatar />
+            <Avatar src={profileImageUrl} />
           </Link>
         </div>
       </div>

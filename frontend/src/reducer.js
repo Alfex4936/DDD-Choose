@@ -5,6 +5,7 @@ export const initialState = {
   error: null,
   history: [],
   model: "gpt-4",
+  profileImageUrl: "",
 };
 
 export const actionTypes = {
@@ -17,6 +18,7 @@ export const actionTypes = {
   SET_GPT_MODEL: "SET_GPT_MODEL",
   CLEAR_HISTORY: "CLEAR_HISTORY",
   INIT_STATE: "INIT_STATE",
+  SET_PROFILE_IMAGE_URL: "SET_PROFILE_IMAGE_URL",
 };
 
 const reducer = (state, action) => {
@@ -80,7 +82,11 @@ const reducer = (state, action) => {
         ...state,
         model: action.model,
       };
-
+    case actionTypes.SET_PROFILE_IMAGE_URL:
+      return {
+        ...state,
+        profileImageUrl: action.profileImageUrl,
+      };
     default:
       return state;
   }
