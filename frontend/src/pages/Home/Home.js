@@ -30,7 +30,6 @@ function Home() {
   const [gptModel, setGptModel] = useState(model || "gpt-4");
   const [open, setOpen] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState(null);
 
   const handleClickOpenHistory = () => {
     setOpenHistory(true);
@@ -110,20 +109,6 @@ function Home() {
   const handleModelChange = event => {
     setGptModel(event.target.value);
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem("jwt");
-
-    if (token) {
-      fetchUserData(token)
-        .then(data => {
-          setAvatarUrl(data.thumbnail_image_url);
-        })
-        .catch(error => {
-          console.error("An error occurred:", error);
-        });
-    }
-  }, []);
 
   useEffect(() => {
     setKey(openAIKey);
