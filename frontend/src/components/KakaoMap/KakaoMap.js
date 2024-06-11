@@ -46,8 +46,8 @@ const KakaoMap = ({ places }) => {
         infowindow.open(map, marker);
       });
 
-      // Open the info window for 30% of markers initially
-      if (Math.random() < 0.3) {
+      // Open the info window for 10% of markers initially
+      if (Math.random() < 0.1) {
         infowindow.open(map, marker);
       }
 

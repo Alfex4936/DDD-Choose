@@ -58,8 +58,9 @@ pub async fn get_openai_response_rs(
         AUTHORIZATION,
         HeaderValue::from_str(&format!("Bearer {}", api)).unwrap(),
     );
-
-    let max_tokens = if model == "gpt-4" { 200 } else { 300 };
+    
+    let max_tokens = if model.contains("gpt-4") { 200 } else { 300 };
+    // let max_tokens = 512;
     let client = reqwest::Client::new();
 
     let request_body = OpenAIRequest {

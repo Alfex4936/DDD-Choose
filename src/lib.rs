@@ -2,6 +2,7 @@ use std::collections::HashSet;
 
 use gloo_utils::format::JsValueSerdeExt;
 use wasm_bindgen::prelude::*;
+use wasm_bindgen_futures::future_to_promise;
 use web_sys::console;
 mod gpt;
 mod place;
@@ -57,7 +58,7 @@ pub fn get_places(search_string: String) -> js_sys::Promise {
         Ok(js_value)
     };
 
-    wasm_bindgen_futures::future_to_promise(future)
+    future_to_promise(future)
 }
 
 #[wasm_bindgen]
@@ -104,5 +105,5 @@ pub fn get_interests(api: String, model: String, interest: String) -> js_sys::Pr
         Ok(js_value)
     };
 
-    wasm_bindgen_futures::future_to_promise(future)
+    future_to_promise(future)
 }

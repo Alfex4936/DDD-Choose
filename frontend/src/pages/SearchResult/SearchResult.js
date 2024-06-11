@@ -1,12 +1,11 @@
-import React from "react";
-import { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
-import SearchIcon from "@material-ui/icons/Search";
 import CircularProgress from "@material-ui/core/CircularProgress"; // import the loading circle
+import SearchIcon from "@material-ui/icons/Search";
 
-import CloseIcon from "@material-ui/icons/Close";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import CloseIcon from "@material-ui/icons/Close";
 
 import useSearch from "../../hooks/useSearch/useSearch";
 import { useStateValue } from "../../StateContext";
@@ -16,12 +15,12 @@ import SearchOption from "../../components/SearchOption/SearchOption";
 
 import KakaoMap from "../../components/KakaoMap/KakaoMap";
 
+import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import IconButton from "@material-ui/core/IconButton";
 
-import Divider from "@material-ui/core/Divider";
 import Chip from "@material-ui/core/Chip";
+import Divider from "@material-ui/core/Divider";
 
 import "./SearchResult.css";
 

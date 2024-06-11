@@ -1,27 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Search from "../../components/Search/Search";
-import History from "../../components/History/History";
-import { actionTypes } from "../../reducer";
 import { useStateValue } from "../../StateContext";
+import History from "../../components/History/History";
+import Search from "../../components/Search/Search";
+import { actionTypes } from "../../reducer";
 
-import SettingsIcon from "@material-ui/icons/Settings";
-import HistoryIcon from "@material-ui/icons/History";
 import IconButton from "@material-ui/core/IconButton";
 import ClearAllIcon from "@material-ui/icons/ClearAll";
+import HistoryIcon from "@material-ui/icons/History";
+import SettingsIcon from "@material-ui/icons/Settings";
 
+import { Avatar } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import TextField from "@material-ui/core/TextField";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Select from "@material-ui/core/Select";
-import { Avatar } from "@material-ui/core";
-
+import TextField from "@material-ui/core/TextField";
 import "./Home.css";
+
+const generateCSRFToken = () => {
+  return [...Array(30)].map(() => Math.random().toString(36)[2]).join("");
+};
 
 function Home() {
   const [{ openAIKey, history, model, profileImageUrl }, dispatch] =
@@ -85,10 +88,19 @@ function Home() {
 
   const handleLoginOpen = async () => {
     const rest_api_key = process.env.REACT_APP_KAKAO_REST_KEY; //REST API KEY
-    const redirect_uri = process.env.REACT_APP_KAKAO_REDIRECT; //Redirect URI
+    const redirect_uri = encodeURIComponent(
+      process.env.REACT_APP_KAKAO_REDIRECT_DEV
+    ); //Redirect URI
 
-    // oauth 요청 URL
-    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code`;
+    const csrfToken = generateCSRFToken();
+    localStorage.setItem("csrfToken", csrfToken);
+
+    // Store both the CSRF token and the original URL in the state parameter
+    const originalUrl = window.location.href; // Get the current URL
+    const state = `${csrfToken}|${originalUrl}`;
+
+    // Pass CSRF token in state parameter
+    const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${rest_api_key}&redirect_uri=${redirect_uri}&response_type=code&state=${state}`;
 
     try {
       const response = await fetch(redirect_uri, {
@@ -118,7 +130,7 @@ function Home() {
   useEffect(() => {
     const savedHistory =
       JSON.parse(localStorage.getItem("searchHistory")) || [];
-    const GPT = localStorage.getItem("gptModel") || "gpt-4";
+    const GPT = localStorage.getItem("gptModel") || "gpt-4o";
     const savedKey = localStorage.getItem("openAIKey") || "sk-";
 
     dispatch({
@@ -180,6 +192,7 @@ function Home() {
 
           <DialogContentText>Please choose GPT model: </DialogContentText>
           <Select native value={gptModel} onChange={handleModelChange}>
+            <option value={"gpt-4o"}>gpt-4o</option>
             <option value={"gpt-4"}>gpt-4</option>
             <option value={"gpt-3.5-turbo"}>gpt-3.5-turbo</option>
           </Select>

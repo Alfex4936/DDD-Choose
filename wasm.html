@@ -69,7 +69,7 @@
           if (event.key === "Enter") {
             const input3 = document.getElementById("api-input");
             if (event.target.value !== "" && input3.value !== "") {
-              console.log("Calling GPT-4");
+              // console.log("Calling GPT-4");
               let string = await get_interests(
                 input3.value,
                 event.target.value

@@ -22,7 +22,7 @@ export const actionTypes = {
 };
 
 const reducer = (state, action) => {
-  console.log(action); // Good for debugging
+  // console.log(action); // Good for debugging
 
   switch (action.type) {
     case actionTypes.INIT_STATE:

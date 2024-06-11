@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { useStateValue } from "../../StateContext";
 import { actionTypes } from "../../reducer";
 
@@ -17,9 +17,9 @@ export const useSearch = () => {
       try {
         if (term && openAIKey) {
           await init();
-          console.log("wasm module initialized");
+          //console.log("wasm module initialized");
 
-          console.log("TERM: " + term + " MODEL: " + model);
+          //console.log("TERM: " + term + " MODEL: " + model);
           setLoading(true);
           try {
             let place_keywords = await get_interests(openAIKey, model, term);
